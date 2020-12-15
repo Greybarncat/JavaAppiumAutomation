@@ -132,6 +132,22 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCompareSearchLineText()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        assertElementHasText(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Search…",
+                "Cannot find search line"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -172,5 +188,21 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by,error_message,timeoutInSeconds);
         element.clear();
         return element;
+    }
+
+    private void assertElementHasText(By by,String expected_text, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        String element_text = element.getAttribute("text");
+        Assert.assertEquals(
+                error_message+"with text \""+expected_text+"\"",
+                expected_text,
+                element_text
+        );
+    }
+
+    private void assertElementHasText(By by,String expected_text, String error_message)
+    {
+        assertElementHasText(by,expected_text,error_message, 5);
     }
 }
