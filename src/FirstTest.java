@@ -187,6 +187,35 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCorrectSearchResults()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "JAVA",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find search result"
+        );
+
+        ArrayList <WebElement> results = (ArrayList<WebElement>) driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+
+        for (int i=0;i<results.size();i++){
+            String title = results.get(i).getAttribute("text");
+            Assert.assertTrue("Result don't contain Java",title.toLowerCase().contains("java"));
+        }
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
