@@ -847,7 +847,8 @@ public class FirstTest {
         return element.getAttribute(attribute);
     }
 
-    private void assertElementPresent (By by, String error_message) {
+    private void assertElementPresent (By by, String error_message)
+    {
         Assert.assertFalse(error_message, driver.findElements(by).size() == 0);
     }
 }
