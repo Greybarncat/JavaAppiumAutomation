@@ -680,6 +680,35 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testAssertTitleWithoutWaiting()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find Search Wikipedia input",
+                5
+        );
+
+        String search_line = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                search_line,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' topic searching by 'Java' topic searching by " +search_line,
+                15
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title without waiting"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -816,5 +845,9 @@ public class FirstTest {
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private void assertElementPresent (By by, String error_message) {
+        Assert.assertFalse(error_message, driver.findElements(by).size() == 0);
     }
 }
