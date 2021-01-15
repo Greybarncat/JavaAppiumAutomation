@@ -34,13 +34,13 @@ public class MyListsPageObject extends MainPageObject
     public void waitForArticleToAppearByTitle (String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
-        this.waitForElementPresent(By.xpath(article_xpath), "Cannot find saved article with title"+article_title, 15);
+        this.waitForElementPresent(By.xpath(article_xpath), "Cannot find saved article with title "+article_title, 15);
     }
 
     public void waitForArticleToDisappearByTitle (String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
-        this.waitForElementNotPresent(By.xpath(article_xpath), "Saved Article still present with title"+article_title, 15);
+        this.waitForElementNotPresent(By.xpath(article_xpath), "Saved Article still present with title "+article_title, 15);
     }
 
     public void swipeByArticleToDelete(String article_title)
@@ -49,5 +49,17 @@ public class MyListsPageObject extends MainPageObject
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.swipeElementToLeft(By.xpath(article_xpath), "Cannot swipe article to delete");
         waitForArticleToDisappearByTitle(article_title);
+    }
+
+    public void assertThereIsArticleWithTitle(String article_title)
+    {
+        String article_xpath = getSavedArticleXpathByTitle(article_title);
+        this.assertElementPresent(By.xpath(article_xpath), "We supposed to find article with title " + article_title + " in my lists folder");
+    }
+
+    public void openArticleByTitle(String article_title)
+    {
+        String article_xpath = getSavedArticleXpathByTitle(article_title);
+        this.waitForElementAndClick(By.xpath(article_xpath), "Cannot find and open saved article with title " + article_title, 5);
     }
 }

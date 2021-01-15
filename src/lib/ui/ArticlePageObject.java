@@ -14,7 +14,15 @@ public class ArticlePageObject extends MainPageObject
         ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
         MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
         MY_LIST_OK_BUTTON = "//*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+        MY_LIST_FOLDER_BY_NAME_TPL = "//*[@resource-id='org.wikipedia:id/item_title'][@text='{NAME}']";
+
+    /* TEMPLATE METHODS */
+    private static String getMyListFolderXpathByName (String name_of_folder)
+    {
+        return MY_LIST_FOLDER_BY_NAME_TPL.replace("{NAME}", name_of_folder);
+    }
+    /* TEMPLATE METHODS */
 
 
     public ArticlePageObject (AppiumDriver driver)
@@ -51,5 +59,13 @@ public class ArticlePageObject extends MainPageObject
     public void closeArticle()
     {
         this.waitForElementAndClick(By.xpath(CLOSE_ARTICLE_BUTTON), "Cannot close article, cannot find X button", 5);
+    }
+
+    public void addArticleToMyListInExistFolder(String name_of_folder)
+    {
+        this.waitForElementAndClick(By.xpath(OPTIONS_BUTTON), "Cannot find button to open article options", 5);
+        this.waitForElementAndClick(By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON), "Cannot find 'Add to reading list' button", 5);
+        String folder_xpath = getMyListFolderXpathByName(name_of_folder);
+        this.waitForElementAndClick(By.xpath(folder_xpath), "Cannot find created folder by name "+ name_of_folder +" to save article", 5);
     }
 }
