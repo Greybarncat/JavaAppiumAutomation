@@ -33,22 +33,6 @@ public class FirstTest extends CoreTestCase
     }
 
     @Test
-    public void testCancelSearchResult()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        String search_line = "D'n'D";
-        SearchPageObject.typeSearchLine(search_line);
-        int amount_of_search_results = SearchPageObject.getAmountOfFindArticles();
-
-        assertTrue("We found less than 2 search results by " +search_line,amount_of_search_results>=2);
-
-        SearchPageObject.clickCancelSearch();
-        SearchPageObject.assertThereIsNoResultOfSearch();
-    }
-
-    @Test
     public void testCorrectSearchResults()
     {
         MainPageObject.waitForElementAndClick(
@@ -75,60 +59,5 @@ public class FirstTest extends CoreTestCase
             String title = results.get(i).getAttribute("text");
             assertTrue("Result don't contain Java",title.toLowerCase().contains("java"));
         }
-    }
-
-    @Test
-    public void testSaving2Articles()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.waitForTitleElement();
-        String first_article_title = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
-        ArticlePageObject.closeArticle();
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Python");
-        SearchPageObject.clickByArticleWithSubstring("General-purpose programming language");
-        ArticlePageObject.waitForTitleElement();
-        String second_article_title = ArticlePageObject.getArticleTitle();
-        ArticlePageObject.addArticleToMyListInExistFolder(name_of_folder);
-        ArticlePageObject.closeArticle();
-
-        NavigationUI NavigationUI = new NavigationUI(driver);
-        NavigationUI.clickMyLists();
-        try {Thread.sleep(5000);} catch (Exception e){}
-
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(name_of_folder);
-        MyListsPageObject.swipeByArticleToDelete(second_article_title);
-        MyListsPageObject.assertThereIsArticleWithTitle(first_article_title);
-        MyListsPageObject.openArticleByTitle(first_article_title);
-
-        ArticlePageObject.waitForTitleElement();
-
-        assertEquals(
-                "Unexpected title in first article after deleting second",
-                first_article_title,
-                ArticlePageObject.getArticleTitle()
-        );
-    }
-
-    @Test
-    public void testAssertTitleWithoutWaiting()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.assertThereIsArticleTitle();
     }
 }
