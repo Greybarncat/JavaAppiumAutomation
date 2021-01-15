@@ -147,7 +147,7 @@ public class MainPageObject
     {
         int amount_of_elements = getAmountOfElements(by);
         if (amount_of_elements > 0) {
-            String default_message = "An element '" + by.toString() + "' supposed to br not present";
+            String default_message = "An element '" + by.toString() + "' supposed to not present";
             throw new AssertionError(default_message + " " + error_message);
         }
     }
