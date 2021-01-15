@@ -122,29 +122,13 @@ public class FirstTest extends CoreTestCase
     @Test
     public void testAssertTitleWithoutWaiting()
     {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        String search_line = "Java";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                search_line,
-                "Cannot find search input",
-                5
-        );
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Java' topic searching by " +search_line,
-                15
-        );
-
-        MainPageObject.assertElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title without waiting"
-        );
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.assertThereIsArticleTitle();
     }
 }

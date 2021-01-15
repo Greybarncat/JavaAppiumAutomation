@@ -68,4 +68,9 @@ public class ArticlePageObject extends MainPageObject
         String folder_xpath = getMyListFolderXpathByName(name_of_folder);
         this.waitForElementAndClick(By.xpath(folder_xpath), "Cannot find created folder by name "+ name_of_folder +" to save article", 5);
     }
+
+    public void assertThereIsArticleTitle()
+    {
+        this.assertElementPresent( By.id(TITLE), "Cannot find article title without waiting");
+    }
 }
