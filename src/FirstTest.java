@@ -35,39 +35,17 @@ public class FirstTest extends CoreTestCase
     @Test
     public void testCancelSearchResult()
     {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "D'n'D",
-                "Cannot find search input",
-                5
-        );
+        SearchPageObject.initSearchInput();
+        String search_line = "D'n'D";
+        SearchPageObject.typeSearchLine(search_line);
+        int amount_of_search_results = SearchPageObject.getAmountOfFindArticles();
 
-        MainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/page_list_item_title"),
-                "Cannot find search result"
-        );
+        assertTrue("We found less than 2 search results by " +search_line,amount_of_search_results>=2);
 
-        ArrayList <WebElement> results = (ArrayList<WebElement>) driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
-
-        assertTrue("Search results < 2",results.size()>=2);
-
-        MainPageObject.waitForElementAndClear(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find search field",
-                5
-        );
-
-        MainPageObject.waitForElementNotPresent(
-                By.id("org.wikipedia:id/page_list_item_title"),
-                "Results don't clear",
-                5
-        );
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.assertThereIsNoResultOfSearch();
     }
 
     @Test
@@ -98,7 +76,7 @@ public class FirstTest extends CoreTestCase
             assertTrue("Result don't contain Java",title.toLowerCase().contains("java"));
         }
     }
-    
+
     @Test
     public void testSaving2Articles()
     {
