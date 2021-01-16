@@ -19,45 +19,19 @@ public class FirstTest extends CoreTestCase
     @Test
     public void testCompareSearchLineText()
     {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.assertElementHasText(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Search…",
-                "Cannot find search line"
-        );
+        SearchPageObject.initSearchInput();
+        SearchPageObject.assertSearchInputHasText("Search…");
     }
 
     @Test
     public void testCorrectSearchResults()
     {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "JAVA",
-                "Cannot find search input",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/page_list_item_title"),
-                "Cannot find search result"
-        );
-
-        ArrayList <WebElement> results = (ArrayList<WebElement>) driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
-
-        for (int i=0;i<results.size();i++){
-            String title = results.get(i).getAttribute("text");
-            assertTrue("Result don't contain Java",title.toLowerCase().contains("java"));
-        }
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.assertAllSearchResultContainsText("java");
     }
 }

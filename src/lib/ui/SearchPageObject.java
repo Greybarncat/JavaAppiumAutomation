@@ -1,7 +1,11 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
 
 public class SearchPageObject extends MainPageObject {
 
@@ -12,7 +16,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_EMPTY_RESULT_LABEL = "//*[@text='No results found']",
-            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{DESCRIPTION}']/../*[@text='{TITLE}']";
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{DESCRIPTION}']/../*[@text='{TITLE}']",
+            SEARCH_INPUT_FIELD = "org.wikipedia:id/search_src_text",
+            SEARCH_RESULT_TITLE = "org.wikipedia:id/page_list_item_title";
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -91,5 +97,22 @@ public class SearchPageObject extends MainPageObject {
     {
         String search_result_xpath = getSearchResultByTitleAndDescription(title, description);
         this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find search result with title " + title + " and description " + description, 10);
+    }
+
+    public void assertSearchInputHasText(String text)
+    {
+        this.assertElementHasText(By.id(SEARCH_INPUT_FIELD), text, "We supposed search line has text " + text);
+    }
+
+    public void assertAllSearchResultContainsText(String text)
+    {
+        this.waitForElementPresent(By.id(SEARCH_RESULT_TITLE), "Cannot find search result", 10);
+
+        ArrayList<WebElement> results = (ArrayList<WebElement>) driver.findElements(By.id(SEARCH_RESULT_TITLE));
+
+        for (int i=0;i<results.size();i++){
+            String title = results.get(i).getAttribute("text");
+            Assert.assertTrue("Result don't contain " + text ,title.toLowerCase().contains(text));
+        }
     }
 }
