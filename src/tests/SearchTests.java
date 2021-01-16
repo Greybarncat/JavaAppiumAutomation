@@ -80,4 +80,23 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.waitForElementByTitleAndDiscription("Riverdale (2017 TV series)","American teen drama television series");
         SearchPageObject.waitForElementByTitleAndDiscription("River Thames","River in southern England");
     }
+
+    @Test
+    public void testCompareSearchLineText()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.assertSearchInputHasText("Search…");
+    }
+
+    @Test
+    public void testCorrectSearchResults()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.assertAllSearchResultContainsText("java");
+    }
 }
