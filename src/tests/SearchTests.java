@@ -68,4 +68,16 @@ public class SearchTests extends CoreTestCase
         SearchPageObject.clickCancelSearch();
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testSearchResultByTitleAndDescription()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("river");
+        SearchPageObject.waitForElementByTitleAndDiscription("River","Larger natural watercourse");
+        SearchPageObject.waitForElementByTitleAndDiscription("Riverdale (2017 TV series)","American teen drama television series");
+        SearchPageObject.waitForElementByTitleAndDiscription("River Thames","River in southern England");
+    }
 }
