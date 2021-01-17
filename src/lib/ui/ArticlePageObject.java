@@ -1,21 +1,20 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject
 {
     private static final String
-        TITLE = "org.wikipedia:id/view_page_title_text",
-        FOOTER_ELEMENT = "//*[@text='View page in browser']",
-        OPTIONS_BUTTON = "//android.widget.ImageView[@content-desc='More options']",
-        OPTIONS_ADD_TO_MY_LIST_BUTTON = "//*[@text='Add to reading list']",
-        ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
-        MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
-        MY_LIST_OK_BUTTON = "//*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
-        MY_LIST_FOLDER_BY_NAME_TPL = "//*[@resource-id='org.wikipedia:id/item_title'][@text='{NAME}']";
+        TITLE = "id:org.wikipedia:id/view_page_title_text",
+        FOOTER_ELEMENT = "xpath://*[@text='View page in browser']",
+        OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
+        OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
+        ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
+        MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
+        MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
+        CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
+        MY_LIST_FOLDER_BY_NAME_TPL = "xpath://*[@resource-id='org.wikipedia:id/item_title'][@text='{NAME}']";
 
     /* TEMPLATE METHODS */
     private static String getMyListFolderXpathByName (String name_of_folder)
@@ -32,7 +31,7 @@ public class ArticlePageObject extends MainPageObject
 
     public WebElement waitForTitleElement()
     {
-        return this.waitForElementPresent(By.id(TITLE), "Cannot find article title on page", 15);
+        return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
     }
 
     public String getArticleTitle()
@@ -43,34 +42,34 @@ public class ArticlePageObject extends MainPageObject
 
     public void swipeToFooter()
     {
-        this.swipeUpToFindElement(By.xpath(FOOTER_ELEMENT), "Cannot find the end of article", 20);
+        this.swipeUpToFindElement(FOOTER_ELEMENT, "Cannot find the end of article", 20);
     }
 
     public void addArticleToMyList(String name_of_folder)
     {
-        this.waitForElementAndClick(By.xpath(OPTIONS_BUTTON), "Cannot find button to open article options", 5);
-        this.waitForElementAndClick(By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON), "Cannot find 'Add to reading list' button", 5);
-        this.waitForElementAndClick(By.id(ADD_TO_MY_LIST_OVERLAY), "Cannot find 'Got it' tip overlay", 5);
-        this.waitForElementAndClear(By.id(MY_LIST_NAME_INPUT), "Cannot find input to set name of article folder", 5);
-        this.waitForElementAndSendKeys(By.id(MY_LIST_NAME_INPUT), name_of_folder, "Cannot put text into articles folder input", 5);
-        this.waitForElementAndClick(By.xpath(MY_LIST_OK_BUTTON), "Cannot find 'OK' button", 5);
+        this.waitForElementAndClick(OPTIONS_BUTTON, "Cannot find button to open article options", 5);
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find 'Add to reading list' button", 5);
+        this.waitForElementAndClick(ADD_TO_MY_LIST_OVERLAY, "Cannot find 'Got it' tip overlay", 5);
+        this.waitForElementAndClear(MY_LIST_NAME_INPUT, "Cannot find input to set name of article folder", 5);
+        this.waitForElementAndSendKeys(MY_LIST_NAME_INPUT, name_of_folder, "Cannot put text into articles folder input", 5);
+        this.waitForElementAndClick(MY_LIST_OK_BUTTON, "Cannot find 'OK' button", 5);
     }
 
     public void closeArticle()
     {
-        this.waitForElementAndClick(By.xpath(CLOSE_ARTICLE_BUTTON), "Cannot close article, cannot find X button", 5);
+        this.waitForElementAndClick(CLOSE_ARTICLE_BUTTON, "Cannot close article, cannot find X button", 5);
     }
 
     public void addArticleToMyListInExistFolder(String name_of_folder)
     {
-        this.waitForElementAndClick(By.xpath(OPTIONS_BUTTON), "Cannot find button to open article options", 5);
-        this.waitForElementAndClick(By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON), "Cannot find 'Add to reading list' button", 5);
+        this.waitForElementAndClick(OPTIONS_BUTTON, "Cannot find button to open article options", 5);
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find 'Add to reading list' button", 5);
         String folder_xpath = getMyListFolderXpathByName(name_of_folder);
-        this.waitForElementAndClick(By.xpath(folder_xpath), "Cannot find created folder by name "+ name_of_folder +" to save article", 5);
+        this.waitForElementAndClick(folder_xpath, "Cannot find created folder by name "+ name_of_folder +" to save article", 5);
     }
 
     public void assertThereIsArticleTitle()
     {
-        this.assertElementPresent( By.id(TITLE), "Cannot find article title without waiting");
+        this.assertElementPresent(TITLE, "Cannot find article title without waiting");
     }
 }
