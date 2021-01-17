@@ -26,7 +26,7 @@ public class CoreTestCase extends TestCase
 
         DesiredCapabilities capabilities = this.getCapabilitiesByPlatformEnv();
         driver = this.getDriverByPlatformEnv(new URL(AppiumURL), capabilities);
-        this.rotateScreenPortrait();
+        
     }
 
     @Override
