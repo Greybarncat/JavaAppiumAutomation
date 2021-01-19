@@ -114,4 +114,9 @@ abstract public class SearchPageObject extends MainPageObject {
             Assert.assertTrue("Result don't contain " + text ,title.toLowerCase().contains(text));
         }
     }
+
+    public void clearSearchInput()
+    {
+        this.waitForElementAndClear(SEARCH_INPUT, "Cannot find and clear search input", 5);
+    }
 }

@@ -7,20 +7,33 @@ import org.openqa.selenium.WebElement;
 abstract public class ArticlePageObject extends MainPageObject
 {
     protected static String
-        TITLE,
-        FOOTER_ELEMENT,
-        OPTIONS_BUTTON,
-        OPTIONS_ADD_TO_MY_LIST_BUTTON,
-        ADD_TO_MY_LIST_OVERLAY,
-        MY_LIST_NAME_INPUT,
-        MY_LIST_OK_BUTTON,
-        CLOSE_ARTICLE_BUTTON,
-        MY_LIST_FOLDER_BY_NAME_TPL;
+            TITLE,
+            FOOTER_ELEMENT,
+            OPTIONS_BUTTON,
+            OPTIONS_ADD_TO_MY_LIST_BUTTON,
+            ADD_TO_MY_LIST_OVERLAY,
+            MY_LIST_NAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            CLOSE_ARTICLE_BUTTON,
+            MY_LIST_FOLDER_BY_NAME_TPL,
+            TITLE_IOS_BY_NAME_TPL,
+            CONTENTS_BUTTON,
+            CONTENTS_TITLE_BY_NAME_TPL;
 
     /* TEMPLATE METHODS */
     private static String getMyListFolderXpathByName (String name_of_folder)
     {
         return MY_LIST_FOLDER_BY_NAME_TPL.replace("{NAME}", name_of_folder);
+    }
+
+    private static String getTitleIOsLocatorByName(String name_of_article)
+    {
+        return TITLE_IOS_BY_NAME_TPL.replace("{NAME}", name_of_article);
+    }
+
+    private static String getContentsTitleLocatorByName(String name_of_article)
+    {
+        return CONTENTS_TITLE_BY_NAME_TPL.replace("{NAME}", name_of_article);
     }
     /* TEMPLATE METHODS */
 
@@ -33,6 +46,18 @@ abstract public class ArticlePageObject extends MainPageObject
     public WebElement waitForTitleElement()
     {
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
+    }
+
+    public WebElement waitForTitleElementIOs(String name)
+    {
+        String title_locator = getTitleIOsLocatorByName(name);
+        return this.waitForElementPresent(title_locator, "Cannot find article title on page", 15);
+    }
+
+    public WebElement waitForContentsTitleElement(String name)
+    {
+        String contents_title_locator = getContentsTitleLocatorByName(name);
+        return this.waitForElementPresent(contents_title_locator, "Cannot find title " + name + "on contents", 15);
     }
 
     public String getArticleTitle()
@@ -83,5 +108,10 @@ abstract public class ArticlePageObject extends MainPageObject
     public void assertThereIsArticleTitle()
     {
         this.assertElementPresent(TITLE, "Cannot find article title without waiting");
+    }
+
+    public void clickContentsButton()
+    {
+        this.waitForElementAndClick(CONTENTS_BUTTON, "Cannot find and click contents button", 5);
     }
 }
