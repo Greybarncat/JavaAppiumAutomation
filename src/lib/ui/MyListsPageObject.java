@@ -1,12 +1,14 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject
+abstract public class MyListsPageObject extends MainPageObject
 {
-    private static final String
-    FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-    ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            ARTICLE_BY_TITLE_TPL,
+            SYNC_POPUP_CLOSE_BUTTON;
 
     /* TEMPLATE METHODS */
     private static String getFolderXpathByName (String name_of_folder)
@@ -47,6 +49,9 @@ public class MyListsPageObject extends MainPageObject
         waitForArticleToAppearByTitle(article_title);
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.swipeElementToLeft(article_xpath, "Cannot swipe article to delete");
+        if (Platform.getInstance().isIOs()){
+            this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find saved article");
+        }
         waitForArticleToDisappearByTitle(article_title);
     }
 
@@ -60,5 +65,10 @@ public class MyListsPageObject extends MainPageObject
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementAndClick(article_xpath, "Cannot find and open saved article with title " + article_title, 5);
+    }
+
+    public void clickSyncPopupCloseButton()
+    {
+        this.waitForElementAndClick(SYNC_POPUP_CLOSE_BUTTON, "Cannot find and click x button on sync popup", 5);
     }
 }
