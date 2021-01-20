@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
@@ -77,7 +78,11 @@ public class SearchTests extends CoreTestCase
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("river");
-        SearchPageObject.waitForElementByTitleAndDiscription("River","Larger natural watercourse");
+        if (Platform.getInstance().isAndroid()){
+            SearchPageObject.waitForElementByTitleAndDiscription("River","Larger natural watercourse");
+        } else {
+            SearchPageObject.waitForElementByTitleAndDiscription("River","Natural flowing watercourse");
+        }
         SearchPageObject.waitForElementByTitleAndDiscription("Riverdale (2017 TV series)","American teen drama television series");
         SearchPageObject.waitForElementByTitleAndDiscription("River Thames","River in southern England");
     }
